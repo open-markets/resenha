@@ -1,0 +1,10 @@
+# NPM
+node_modules
+package-lock.json
+
+# Nesoi
+.nesoi
+.env
+
+# TypeScript
+build

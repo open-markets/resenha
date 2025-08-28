@@ -46,8 +46,8 @@ Plataforma aberta de divulgação de Eventos.
 
 Existem 5 frentes de desenvolvimento:
 
-- `OEF (Open Events Format)`: _OEF_ é um formato de dados JSON para a descrição de "Eventos". Esse formato permite a intercomunicação entre diferentes aplicações, inclusive externas ao projeto _resenha_.
-- `App Resenha`: Um aplicativo mobile (iOS/Android) que permite a visualização de _Eventos_ (OEF). Os _eventos_ são adquiridos de _Agendas_ - links que apontam para um JSON com uma lista de eventos. Tais agendas são criáveis por qualquer pessoa ou entidade e compartilháveis via P2P.
+- `OSF (Open Scheduling Format)`: _OSF_ é um formato de dados JSON para a descrição de "Eventos". Esse formato permite a intercomunicação entre diferentes aplicações, inclusive externas ao projeto _resenha_.
+- `App Resenha`: Um aplicativo mobile (iOS/Android) que permite a visualização de _Eventos_ (OSF). Os _eventos_ são adquiridos de _Agendas_ - links que apontam para um JSON com uma lista de eventos. Tais agendas são criáveis por qualquer pessoa ou entidade e compartilháveis via P2P.
 - `App Resenha (Editor)`: Um aplicativo web e mobile (iOS/Android) que permite a edição de _Agendas_. O aplicativo manipula a _agenda_ localmente, e pode importar/exportar de/para diversos serviços de hosting.
 - _[futuro]_ ~~`Algoritmo de Recomendação`: Um algoritmo aberto de recomendação, baseado em LLMs que rodam diretamente na máquina do usuário para máxima privacidade, customizável e limitado pelas _agendas_ importadas.~~
 - _[futuro]_ ~~`Tracker`: Uma central de _agendas_ com integrações (bots) em diferentes redes sociais para facilitar o compartilhamento de agendas.~~
@@ -56,12 +56,12 @@ Existem 5 frentes de desenvolvimento:
 
 Esse repositório é um _mono-repo_ contendo todo o código relacionado ao `resenha`, que se divide nos seguintes pacotes:
 
-- `oef`: Definições de tipo e validadores do `OEF` em linguagens relevantes para o projeto
-- `app`: Aplicação Mobile em Vue3+Vuetify
-- `app_editor`: Aplicação Web/Mobile em Vue3+Vuetify
-- `fofoca`: Pacote NPM do algoritmo de recomendação, contendo uma LLM in-browser (WebASM) e uma camada de integração com OEF.
-- `tracker`: Aplicação Node + Web/Mobile em Vue3+Vuetify e bots para integração com redes sociais.
-- `common`: Biblioteca de componentes Vue3 utilizados por diferentes aplicações do projeto.
+- `osf`: Definições de tipo e validadores do `OSF` em linguagens relevantes para o projeto
+- `osf-vue`: Biblioteca de componentes Vue3 utilizados por diferentes aplicações do projeto.
+- `resenha-app`: Aplicação Mobile em Vue3+Vuetify
+- `resenha-editor-app`: Aplicação Web/Mobile em Vue3+Vuetify
+- `osf-tracker`: Aplicação Node + Web/Mobile em Vue3+Vuetify e bots para integração com redes sociais.
+- `fofoca`: Pacote NPM do algoritmo de recomendação, contendo uma LLM in-browser (WebASM) e uma camada de integração com OSF.
 
 Cada pasta possui um README com instruções de como rodar o ambiente de desenvolvimento localmente.
 
