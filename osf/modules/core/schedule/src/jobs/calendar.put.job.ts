@@ -1,20 +1,30 @@
 import nesoi from "$";
+import { ulid } from "ulid";
 
 export default nesoi.job('schedule::calendar.put')
-    .input('calendar.put')
+    .input('@')
     .method(async $ => {
 
-        await $.trx.bucket('peer::publisher').put($.msg.publisher);
+        const publisher = await $.trx.bucket('peer::publisher').put({
+            ...$.msg.publisher,
+            id: $.msg.publisher.id ?? ulid()
+        });
         
+        const events_ids: string[] = [];
         for (const event of $.msg.events) {
-            await $.trx.job('event.put').forward(event as any);
+            const e = await $.trx.job('event.put').forward({
+                ...event,
+                id: event.id ?? ulid()
+            } as any);
+            events_ids.push(e);
         }
 
-        await $.trx.bucket('calendar').put({
+        const c = await $.trx.bucket('calendar').put({
             ...$.msg,
-            publisher_id: $.msg.publisher.id,
-            events_ids: $.msg.events.map(x => x.id)
+            id: $.msg.id ?? ulid(),
+            publisher_id: publisher.id,
+            events_ids
         });
 
-        return $.trx.bucket('calendar').readOne($.msg.id);
+        return $.trx.bucket('calendar').buildOne(c, 'full');
     })

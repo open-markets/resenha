@@ -4,6 +4,7 @@ import NesoiArchitect from 'osf-browser/app';
 import type NesoiArchitectSpace from 'osf-browser/types/space';
 import type { TrxNode } from '@nesoi/for-browser/lib/engine/transaction/trx_node';
 import { ulid } from 'ulid';
+import { NesoiDatetime } from '@nesoi/for-browser/lib/engine/data/datetime';
 
 export const useAppStore = defineStore('app', {
   state: () => ({
@@ -28,13 +29,11 @@ export const useAppStore = defineStore('app', {
         })
       })
 
+      console.log(this.daemon);
+
       await this.daemon.trx('schedule').run(async trx => {
-        const eventId = ulid();
-        const locationId = ulid();
         await trx.job('event.put').run({
-          $: 'event',
           __osf: 'event:1.0',
-          id: eventId,
           alias: 'Test Event',
           description: 'A test event',
           calendar_id: calendar.id,
@@ -42,19 +41,60 @@ export const useAppStore = defineStore('app', {
             {
               __osf: 'location:1.0',
               id: ulid(),
+              name: 'Test Location',
               address: {
-
+                __osf: 'address:1.0',
+                lat: -22.95352643729582,
+                lon: -45.45771881052867,
+                country: 'Brasil',
+                state: 'São Paulo',
+                city: 'Interim do Norte',
+                street: 'Rua Goiaba do Alecrim',
+                number: '12321',
               },
-              name: 'Test Location'
+            }
+          ],
+          contacts: [
+            {
+              __osf: 'contact:1.0',
+              type: 'social_media',
+              value: 'https://instagram.com/hugoaboud'
+            }
+          ],
+          medias: [
+            {
+              __osf: 'media:1.0',
+              type: 'other',
+              uri: 'https://myevent.com'
             }
           ],
           schedules: [
             {
               __osf: 'schedule:1.0',
-              id: ulid(),
-              event_id: eventId,
-              locationId: 
+              location_id: 0,
+              start_datetime: NesoiDatetime.now().toISO(),
+              end_datetime: NesoiDatetime.now().plus('8 hours').toISO(),
             }
+          ],
+          properties: [
+            {
+              type: 'service',
+              subtype: 'food',
+              alias: 'Coxinha',
+              description: 'Coxinha de frango com catupiry',
+              value: 'R$7,00'
+            },
+            {
+              type: 'structure',
+              subtype: 'bathroom',
+              alias: 'Banheiro'
+            },
+            {
+              type: 'condition',
+              required: true,
+              alias: 'Respeita as plantinha',
+              description: 'Nada de ficar comendo mato'
+            },
           ]
         })
       })

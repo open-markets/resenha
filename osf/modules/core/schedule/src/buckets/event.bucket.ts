@@ -44,21 +44,21 @@ export default nesoi.bucket('schedule::event')
         locations: $.many('info::location', {
             'id in': {'.': 'locations_ids'}
         }),
-        schedules: $.compose.many('schedule', {
-            'id in': {'.': 'schedules_ids'}
-        }),
-        medias: $.compose.many('info::media', {
-            'id in': {'.': 'medias_ids'}
-        }),
         contacts: $.many('info::contact', {
             'id in': {'.': 'contacts_ids'}
+        }),
+        medias: $.many('info::media', {
+            'id in': {'.': 'medias_ids'}
+        }),
+        schedules: $.many('schedule', {
+            'id in': {'.': 'schedules_ids'}
         }),
     }))
 
     .view('full', $ => ({
         ...$.raw(),
         locations: $.graph('locations'),
-        schedules: $.graph('schedules'),
-        medias: $.graph('medias'),
         contacts: $.graph('contacts'),
+        medias: $.graph('medias'),
+        schedules: $.graph('schedules'),
     }))

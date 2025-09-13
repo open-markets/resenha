@@ -1,6 +1,10 @@
 import nesoi from "$";
 
 export default nesoi.message('peer::publisher.put')
-    .template($ => $.extend('publisher.create', {
-        id: $.string
+    .template($ => ({
+        __osf: $.enum(['publisher:1.0']),
+        id: $.string.optional,
+        alias: $.string,
+        description: $.string.optional,
+        uri: $.string
     }))
