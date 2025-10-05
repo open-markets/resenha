@@ -6,7 +6,7 @@ export type DateTime = string
 /* Tracker */
 
 export type OSF_Tracker = {
-    __osf: `tracker:${Version}`,
+    __nrge: `tracker:${Version}`,
 
     id: ULID
 
@@ -23,7 +23,7 @@ export type OSF_Tracker = {
 /* Seeder */
 
 export type OSF_Seeder = {
-    __osf: `seeder:${Version}`,
+    __nrge: `seeder:${Version}`,
 
     id: ULID
     alias: string
@@ -40,7 +40,7 @@ export type OSF_Seeder = {
 /* Calendar */
 
 export type OSF_Calendar = {
-    __osf: `calendar:${Version}`,
+    __nrge: `calendar:${Version}`,
 
     id: ULID
     hash: string
@@ -55,7 +55,7 @@ export type OSF_Calendar = {
 /* Event */
 
 export type OSF_Event = {
-    __osf: `event:${Version}`,
+    __nrge: `event:${Version}`,
     
     id: ULID
     hash: string
@@ -79,14 +79,14 @@ export type OSF_Event = {
 /* Location */
 
 export type OSF_Location = {
-    __osf: `location:${Version}`,
+    __nrge: `location:${Version}`,
     id: ULID
     name: string
     address: OSF_Address
 }
 
 export type OSF_Address = {
-    __osf: `address:${Version}`,
+    __nrge: `address:${Version}`,
     id: ULID
     lat: number,
     lon: number,
@@ -102,7 +102,7 @@ export type OSF_Address = {
 /* Schedule */
 
 export type OSF_Schedule = {
-    __osf: `schedule:${Version}`,
+    __nrge: `schedule:${Version}`,
     id: ULID
     location: ULID
     start: DateTime

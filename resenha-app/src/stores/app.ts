@@ -33,17 +33,17 @@ export const useAppStore = defineStore('app', {
 
       await this.daemon.trx('schedule').run(async trx => {
         await trx.job('event.put').run({
-          __osf: 'event:1.0',
+          __nrge: 'event:1.0',
           alias: 'Test Event',
           description: 'A test event',
           calendar_id: calendar.id,
           locations: [
             {
-              __osf: 'location:1.0',
+              __nrge: 'location:1.0',
               id: ulid(),
               name: 'Test Location',
               address: {
-                __osf: 'address:1.0',
+                __nrge: 'address:1.0',
                 lat: -22.95352643729582,
                 lon: -45.45771881052867,
                 country: 'Brasil',
@@ -56,21 +56,21 @@ export const useAppStore = defineStore('app', {
           ],
           contacts: [
             {
-              __osf: 'contact:1.0',
+              __nrge: 'contact:1.0',
               type: 'social_media',
               value: 'https://instagram.com/hugoaboud'
             }
           ],
           medias: [
             {
-              __osf: 'media:1.0',
+              __nrge: 'media:1.0',
               type: 'other',
               uri: 'https://myevent.com'
             }
           ],
           schedules: [
             {
-              __osf: 'schedule:1.0',
+              __nrge: 'schedule:1.0',
               location_id: 0,
               start_datetime: NesoiDatetime.now().toISO(),
               end_datetime: NesoiDatetime.now().plus('8 hours').toISO(),
