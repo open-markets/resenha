@@ -1,9 +1,9 @@
 import Nesoi from '$';
-import { BrowserApp } from 'nesoi/lib/bundler/browser/browser.bundler';
 import { BrowserDBBucketAdapter } from 'nesoi/lib/elements/entities/bucket/adapters/browserdb.bucket_adapter';
 import { BrowserDBService } from 'nesoi/lib/elements/entities/bucket/adapters/browserdb.service';
+import { MonolythApp } from 'nesoi/lib/engine/app/native/monolyth.app';
 
-export default new BrowserApp('nuraghe-consumer-browser', Nesoi)
+export default new MonolythApp('nuraghe-consumer', Nesoi)
 
 /**
    *  Package

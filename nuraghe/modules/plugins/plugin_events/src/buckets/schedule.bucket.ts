@@ -1,9 +1,8 @@
 import nesoi from '$';
-import { Version } from '../../../../../lib/types';
 
-export default nesoi.bucket('events::schedule')
+export default nesoi.bucket('plugin_events::schedule')
   .model($ => ({
-    __nrge: $.literal<`content:${Version}:events:schedule`>(/content:\d+:events:schedule/),
+    __nrge: $.literal<`content:${number}:events:schedule`>(/content:\d+:events:schedule/),
     id: $.string, // ULID
     event_id: $.string,
     location_id: $.string,
@@ -12,7 +11,7 @@ export default nesoi.bucket('events::schedule')
     description: $.string.optional
   }))
   .graph($ => ({
-    location: $.one('info::location', {
+    location: $.one('plugin_info::location', {
       id: {'.':'location_id'}
     })
   }));

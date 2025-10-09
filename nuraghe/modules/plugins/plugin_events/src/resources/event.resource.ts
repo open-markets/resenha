@@ -1,7 +1,7 @@
 import nesoi from '$';
 
-export default nesoi.resource('events::event')
-  .bucket('events::event')
+export default nesoi.resource('plugin_events::event')
+  .bucket('plugin_events::event')
   .view()
   .query()
   .create($ => $)

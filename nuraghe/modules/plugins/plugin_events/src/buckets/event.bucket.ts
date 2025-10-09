@@ -1,9 +1,8 @@
 import nesoi from '$';
-import { Version } from '../../../../../lib/types';
 
-export default nesoi.bucket('events::event')
+export default nesoi.bucket('plugin_events::event')
   .model($ => ({
-    __nrge: $.literal<`content:${Version}:events:event`>(/content:\d+:events:event/),
+    __nrge: $.literal<`content:${number}:events:event`>(/content:\d+:events:event/),
     id: $.string, // ULID
     hash: $.string,
     alias: $.string,
@@ -11,11 +10,11 @@ export default nesoi.bucket('events::event')
     calendar_id: $.string,
     locations_ids: $.list($.string),
     schedules_ids: $.list($.string),
-    medias_ids: $.list($.string),
+    contents_ids: $.list($.string),
     contacts_ids: $.list($.string),
     properties: $.list($.union(
       $.obj({
-        id: $.string,
+        id: $.string.optional,
         type: $.enum(['service']),
         subtype: $.enum(['food','music','arts','other']),
         alias: $.string,
@@ -23,7 +22,6 @@ export default nesoi.bucket('events::event')
         value: $.string
       }),
       $.obj({
-        id: $.string,
         type: $.enum(['structure']),
         subtype: $.enum(['bathroom','seating','parking','climate','accessibility','other']),
         alias: $.string,
@@ -31,7 +29,6 @@ export default nesoi.bucket('events::event')
         description: $.string.optional
       }),
       $.obj({
-        id: $.string,
         type: $.enum(['condition']),
         required: $.boolean,
         alias: $.string,
@@ -41,16 +38,16 @@ export default nesoi.bucket('events::event')
   }))
 
   .graph($ => ({
-    locations: $.many('info::location', {
+    locations: $.many('plugin_info::location', {
       'id in': {'.': 'locations_ids'}
     }),
-    contacts: $.many('info::contact', {
+    contacts: $.many('plugin_info::contact', {
       'id in': {'.': 'contacts_ids'}
     }),
-    medias: $.many('info::media', {
-      'id in': {'.': 'medias_ids'}
+    contents: $.many('core::content', {
+      'id in': {'.': 'contents_ids'}
     }),
-    schedules: $.many('schedule', {
+    schedules: $.compose.many('schedule', {
       'id in': {'.': 'schedules_ids'}
     }),
   }))
@@ -59,6 +56,6 @@ export default nesoi.bucket('events::event')
     ...$.raw(),
     locations: $.graph('locations'),
     contacts: $.graph('contacts'),
-    medias: $.graph('medias'),
+    contents: $.graph('contents'),
     schedules: $.graph('schedules'),
   }));

@@ -2,7 +2,7 @@ import nesoi from '$';
 
 export default nesoi.bucket('core::content')
   .model($ => ({
-    __nrge: $.literal<`content:${number}`>(/content:\d/),
+    __nrge: $.literal<`content:${number}`>(/content:\d+/),
     id: $.string, // ULID
     publisher_id: $.string,
     hash: $.string,

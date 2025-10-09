@@ -1,15 +1,11 @@
 import nesoi from '$';
-import { Version } from '../../../../../lib/types';
 
-export default nesoi.bucket('info::address')
+export default nesoi.bucket('plugin_info::address')
   .model($ => ({
-    __nrge: $.literal<`content:${Version}:info:address`>(/content:\d+:info:address/),
-
+    __nrge: $.literal<`content:${number}:info:address`>(/content:\d+:info:address/),
     id: $.string, // ULID
-        
     lat: $.float,
     lon: $.float,
-
     country: $.string,
     state: $.string,
     city: $.string,
