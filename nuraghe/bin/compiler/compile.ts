@@ -1,16 +1,30 @@
+import nesoi from '../../nesoi';
 import { Compiler } from 'nesoi/lib/compiler';
 import { Log } from 'nesoi/lib/engine/util/log';
-import Nesoi from '../../nesoi';
+import * as fs from 'fs';
+import * as path from 'path';
+import script from 'nesoi/lib/engine/cli/script';
 
-Log.level = 'info';
+const args = script('compile', $ => $
+  .d('Compiles the TypeScript types for this space')
+  .arg('--debug', '-d', $ => $.d('Enable debug logging'))
+  .arg('--clean', '-c', $ => $.d('Remove .nesoi folder before compiling'))
+).init();
+
+Log.level = args.debug ? 'debug' : 'info';
 
 async function main() {
+  if (args.clean) {
+    Log.warn('compiler', 'cli', 'Removing .nesoi folder...');
+    fs.rmSync(path.join(process.cwd(), '.nesoi'), {
+      recursive: true,
+      force: true
+    });
+  }
 
-  // Nesoi compiler, used to compile the TypeScript schemas into JavaScript
-  await new Compiler(Nesoi, {
+  await new Compiler(nesoi, {
     exclude: ['*.test.ts']
   }).run();
-
 }
 
 void main();

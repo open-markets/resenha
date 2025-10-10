@@ -1,23 +1,29 @@
 import { Compiler } from 'nesoi/lib/compiler';
 import { Log } from 'nesoi/lib/engine/util/log';
-import Nesoi from '../../nesoi';
+import nesoi from '../../nesoi';
 import * as fs from 'fs';
 import path from 'path';
-import UI from 'nesoi/lib/engine/cli/ui';
-import { MonolythApp } from 'nesoi/lib/engine/apps/monolyth/monolyth.app';
-import { BrowserApp } from 'nesoi/lib/engine/apps/browser/browser.app';
-import Shell from 'nesoi/lib/engine/util/shell';
+import { MonolythBundler } from 'nesoi/lib/bundler/monolyth/monolyth.bundler';
+import script from 'nesoi/lib/engine/cli/script';
 
-Log.level = process.argv.includes('--debug') ? 'debug' : 'info';
+const args = script('bundle', $ => $
+  .d('Bundles some Monolyth Application')
+  .arg('app', $ => $.d('Name of the app to run')
+    .value($ => $
+      .enum({
+        'consumer': '[NodeJS] Nuraghe Consumer',
+        'consumer-browser': '[Browser] Nuraghe Consumer'
+      })
+    )
+  )
+  .arg('--debug', '-d', $ => $.d('Enable debug logging'))
+).init();
+
+Log.level = args.debug ? 'debug' : 'info';
 
 async function main() {
-  const app = process.argv[2] || (await UI.select('Pick an app to build:', [
-    '[No App, Elements only]',
-    ...fs.readdirSync('./apps')
-  ])).value;
 
-  /* Elements */
-
+  // Clean .nesoi
   const dotNesoiPath = path.join(process.cwd(), '.nesoi');
   if (fs.existsSync(dotNesoiPath)) {
     fs.rmSync(dotNesoiPath, {
@@ -26,20 +32,16 @@ async function main() {
   }
 
   // Nesoi compiler, used to compile the TypeScript schemas into JavaScript
-  const compiler = await new Compiler(Nesoi, {
+  const compiler = await new Compiler(nesoi, {
     exclude: ['*.test.ts']
   }).run();
 
-  /* App */
-
-  if (app !== '[No App, Elements only]') {
-    if (app.includes('browser')) {
-      await BrowserApp.compile(compiler, './apps/'+app);
-    }
-    else {
-      await MonolythApp.compile(compiler, './apps/'+app);
-    }
-  }
+  // Nesoi Monolyth Bundler, used to create a Monolyth NPM package
+  const filename = {
+    'consumer': './apps/consumer.app.ts',
+    'consumer-browser': './apps/consumer.browser.app.ts'
+  }[args.app];
+  await new MonolythBundler(compiler, filename).run();
 
   // TODO: find out what stays open requiring this
   process.exit();

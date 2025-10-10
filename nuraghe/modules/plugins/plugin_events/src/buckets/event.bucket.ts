@@ -47,7 +47,7 @@ export default nesoi.bucket('plugin_events::event')
     schedules: $.compose.many('schedule', {
       'id in': {'.': 'schedules_ids'}
     }),
-    contents: $.many('core::content', {
+    contents: $.many('content::content', {
       'id in': {'.': 'contents_ids'}
     }),
   }))

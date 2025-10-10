@@ -1,15 +1,10 @@
- 
- 
- 
- 
- 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import nesoi from '$';
 import { Daemon } from 'nesoi/lib/engine/daemon';
 import { TrxNode } from 'nesoi/lib/engine/transaction/trx_node';
 import { ExternalTrxNode } from 'nesoi/lib/engine/transaction/nodes/external.trx_node';
 import { Tag } from 'nesoi/lib/engine/dependency';
-import { Content } from '.nesoi/core.module';
+import { Content } from '.nesoi/content.module';
 
 export default nesoi.job('plugin::content.publish')
   .message('', $ => ({

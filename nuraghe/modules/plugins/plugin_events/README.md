@@ -1,1 +1,1 @@
-# Nuraghe Plugin: Events
+# Nuraghe > Plugins > Events

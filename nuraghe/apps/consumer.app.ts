@@ -1,5 +1,8 @@
 import Nesoi from '$';
-import { BrowserDBBucketAdapter } from 'nesoi/lib/elements/entities/bucket/adapters/browserdb.bucket_adapter';
+import { ConsumerAuthnProvider } from '../lib/auth/consumer.authn_provider';
+import { PublisherAuthnProvider } from '../lib/auth/publisher.authn_provider';
+import { TrackerAuthnProvider } from '../lib/auth/tracker.authn_provider';
+// import { BrowserDBBucketAdapter } from 'nesoi/lib/elements/entities/bucket/adapters/browserdb.bucket_adapter';
 import { BrowserDBService } from 'nesoi/lib/elements/entities/bucket/adapters/browserdb.service';
 import { MonolythApp } from 'nesoi/lib/engine/app/native/monolyth.app';
 
@@ -19,10 +22,18 @@ export default new MonolythApp('nuraghe-consumer', Nesoi)
    */
 
   .modules([
-    'core',
+    // core
+    'backup',
+    'content',
+    'socket',
+
+    // peer
     'consumer',
-    'plugin-info',
-    'plugin-events',
+
+    // plugins
+    'plugin',
+    'plugin_events',
+    'plugin_info',
   ])
 
   
@@ -30,8 +41,8 @@ export default new MonolythApp('nuraghe-consumer', Nesoi)
    *  Services
    */
 
-  .service(new BrowserDBService({
-    dbName: 'osf',
+  .service(new BrowserDBService(() => ({
+    dbName: 'nuraghe',
     dbVersion: 1,
     meta: {
       created_at: 'created_at',
@@ -39,111 +50,108 @@ export default new MonolythApp('nuraghe-consumer', Nesoi)
       updated_at: 'updated_at',
       updated_by: 'updated_by',
     }
-  }))
+  })))
 
 /**
    *  Authentication
    */
 
-  .config.authn({
-    // Here you declare authentication providers for the authentication users
-    // declared on the space (nesoi.ts)
+  .config.auth({
+    'consumer': () => new ConsumerAuthnProvider(),
+    'publisher': () => new PublisherAuthnProvider(),
+    'tracker': () => new TrackerAuthnProvider()
   })
 
-/**
+  /**
    *  Buckets
    */
 
-  .config.module('info', {
+  .config.module('backup', {
     buckets: {
-      address: {
-        adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
-      },
-      contact: {
-        adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
-      },
-      location: {
-        adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
-      },
-      media: {
-        adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
-      },
+      backup: {
+        // adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
+      }
     },
     trx: {
       wrap: BrowserDBService.wrap('idb')
-    },
-    trash: {
-      // Here you can configure the soft-delete behavior of this module
     }
   })
 
-  .config.module('peer', {
+  .config.module('content', {
+    buckets: {
+      content: {
+        // adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
+      }
+    },
+    trx: {
+      wrap: BrowserDBService.wrap('idb')
+    }
+  })
+
+  .config.module('socket', {
     buckets: {
       publisher: {
-        adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
+        // adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
+      },
+      tracker: {
+        // adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
       }
     },
     trx: {
-      wrap: BrowserDBService.wrap('idb')
-    },
-    trash: {
-      // Here you can configure the soft-delete behavior of this module
+      // wrap: BrowserDBService.wrap('idb')
     }
   })
 
-  .config.module('schedule', {
+  // .config.module('publisher', {
+  //   buckets: {
+  //     publisher: {
+        // adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
+  //     },
+  //   },
+  //   trx: {
+  //     wrap: BrowserDBService.wrap('idb')
+  //   }
+  // })
+
+  // .config.module('tracker', {
+  //   buckets: {
+  //     tracker: {
+        // adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
+  //     },
+  //   },
+  //   trx: {
+  //     wrap: BrowserDBService.wrap('idb')
+  //   }
+  // })
+
+  .config.module('plugin_events', {
     buckets: {
-      calendar: {
-        adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
-      },
       event: {
-        adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
+        // adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
       },
       schedule: {
-        adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
+        // adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
+      },
+    },
+    trx: {
+      wrap: BrowserDBService.wrap('idb')
+    }
+  })
+
+  .config.module('plugin_info', {
+    buckets: {
+      address: {
+        // adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
+      },
+      contact: {
+        // adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
+      },
+      location: {
+        // adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
       }
     },
     trx: {
       wrap: BrowserDBService.wrap('idb')
-    },
-    trash: {
-      // Here you can configure the soft-delete behavior of this module
-    }
-  })
-
-  .config.module('consumer', {
-    trx: {
-      wrap: BrowserDBService.wrap('idb')
-    }
-  })
-
-  .config.module('publisher', {
-    trx: {
-      wrap: BrowserDBService.wrap('idb')
-    }
-  })
-
-  .config.module('tracker', {
-    trx: {
-      wrap: BrowserDBService.wrap('idb')
-    }
-  })
-
-/**
-   *  i18N
-   */
-
-// A map of translations for error messages
-//.config.i18n(
-//)
-
-/**
-   *  CLI & Compiler
-   */
-
-  .config.cli({
-    adapters: {
-      // You can use this to add custom features to the app's CLI
     }
   })
 

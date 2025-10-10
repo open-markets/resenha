@@ -1,7 +1,7 @@
  
  
 import nesoi from '$';
-import { Content } from '.nesoi/core.module';
+import { Content } from '.nesoi/content.module';
 
 export default nesoi.job('plugin_events::content.publish')
   .message('', $ => ({
@@ -19,7 +19,9 @@ export default nesoi.job('plugin_events::content.publish')
       throw new Error(`Invalid plugin 'events' metadata for content ${$.msg.content.id} ('${$.msg.content.alias}')`);
     }
 
-    return $.trx.bucket('event')
+    const data = await $.trx.bucket('event')
       .viewOneOrFail(metadata.event_id, 'publish');
-      
+
+    const payload = btoa(JSON.stringify(data));
+    return payload;      
   });
