@@ -6,6 +6,9 @@ export default nesoi.bucket('core::content')
     id: $.string, // ULID
     publisher_id: $.string,
     hash: $.string,
+
+    alias: $.string,
+    description: $.string,
     
     published_at: $.datetime,
     expires_at: $.datetime.optional,
@@ -14,10 +17,6 @@ export default nesoi.bucket('core::content')
     plugin: $.string,
     metadata: $.dict($.any),
     
-    data: $.file({
-      extnames: ['.nrge.content']
-    }),
-
     auth: $.union(
       $.obj({
         __t: $.enum(['password']),
@@ -28,4 +27,18 @@ export default nesoi.bucket('core::content')
         otp: $.string.encrypt('CONTENT_CRYPTO_KEY')
       }),
     ).optional
+  }))
+  .view('publish', $ => ({
+    publisher_id: $.model('publisher_id'),
+    hash: $.model('hash'),
+    alias: $.model('alias'),
+    description: $.model('description'),
+    published_at: $.model('published_at'),
+    expires_at: $.model('expires_at'),
+    uri: $.model('uri'),
+    plugin: $.model('plugin'),
+    metadata: $.model('metadata'),
+    data: $.computed($ => $.trx.job('plugin::content.publish').run({
+      content: $.raw
+    }))
   }));

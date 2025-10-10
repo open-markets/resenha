@@ -2,7 +2,7 @@ import nesoi from '$';
 
 export default nesoi.bucket('plugin_info::location')
   .model($ => ({
-    __nrge: $.literal<`content:${number}:info:location`>(/content:\d+:info:location/),
+    __nrge: $.literal<`data:${number}:info:location`>(/data:\d+:info:location/),
     id: $.string, // ULID
     name: $.string,
     address_id: $.string
@@ -12,7 +12,7 @@ export default nesoi.bucket('plugin_info::location')
       'id': {'.': 'address_id'}
     })
   }))
-  .view('default', $ => ({
+  .view('publish', $ => ({
     ...$.raw(),
     address: $.graph('address')
   }));

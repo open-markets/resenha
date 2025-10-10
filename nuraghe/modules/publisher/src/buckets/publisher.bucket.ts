@@ -8,13 +8,21 @@ export default nesoi.bucket('publisher::publisher')
     description: $.string.optional,
     uris: $.list($.string),
 
-    config: $.obj({
-      self: $.obj({}),
-      consumer: $.union(
-        $.obj({
-          __t: $.enum(['password']),
-          password: $.string.encrypt('PUBLISHER_CRYPTO_KEY')
-        }),
-      )
+    auth: $.union(
+      $.obj({
+        type: $.enum(['password']),
+        password: $.string.encrypt('PUBLISHER_CRYPTO_KEY')
+      }),
+    ).optional
+  }))
+  .graph($ => ({
+    'contents': $.many('core::content', {
+      'publisher_id': {'.':'id'}
     })
+  }))
+  .view('publish', $ => ({
+    alias: $.model('alias'),
+    description: $.model('description'),
+    uris: $.model('uris'),
+    contents: $.graph('contents', 'publish')
   }));

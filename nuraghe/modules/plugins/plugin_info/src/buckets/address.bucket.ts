@@ -2,7 +2,7 @@ import nesoi from '$';
 
 export default nesoi.bucket('plugin_info::address')
   .model($ => ({
-    __nrge: $.literal<`content:${number}:info:address`>(/content:\d+:info:address/),
+    __nrge: $.literal<`data:${number}:info:address`>(/data:\d+:info:address/),
     id: $.string, // ULID
     lat: $.float,
     lon: $.float,

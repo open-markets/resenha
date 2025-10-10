@@ -8,10 +8,10 @@ export default nesoi.bucket('plugin_events::event')
     alias: $.string,
     description: $.string,
     calendar_id: $.string,
+    contacts_ids: $.list($.string),
     locations_ids: $.list($.string),
     schedules_ids: $.list($.string),
     contents_ids: $.list($.string),
-    contacts_ids: $.list($.string),
     properties: $.list($.union(
       $.obj({
         id: $.string.optional,
@@ -38,24 +38,24 @@ export default nesoi.bucket('plugin_events::event')
   }))
 
   .graph($ => ({
-    locations: $.many('plugin_info::location', {
-      'id in': {'.': 'locations_ids'}
-    }),
     contacts: $.many('plugin_info::contact', {
       'id in': {'.': 'contacts_ids'}
     }),
-    contents: $.many('core::content', {
-      'id in': {'.': 'contents_ids'}
+    locations: $.many('plugin_info::location', {
+      'id in': {'.': 'locations_ids'}
     }),
     schedules: $.compose.many('schedule', {
       'id in': {'.': 'schedules_ids'}
     }),
+    contents: $.many('core::content', {
+      'id in': {'.': 'contents_ids'}
+    }),
   }))
 
-  .view('full', $ => ({
+  .view('publish', $ => ({
     ...$.raw(),
-    locations: $.graph('locations'),
     contacts: $.graph('contacts'),
-    contents: $.graph('contents'),
+    locations: $.graph('locations', 'publish'),
     schedules: $.graph('schedules'),
+    contents: $.graph('contents', 'publish'),
   }));
