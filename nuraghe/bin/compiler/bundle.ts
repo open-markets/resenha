@@ -4,6 +4,7 @@ import nesoi from '../../nesoi';
 import * as fs from 'fs';
 import path from 'path';
 import { MonolythBundler } from 'nesoi/lib/bundler/monolyth/monolyth.bundler';
+import { BrowserBundler } from 'nesoi/lib/bundler/browser/browser.bundler';
 import script from 'nesoi/lib/engine/cli/script';
 
 const args = script('bundle', $ => $
@@ -41,7 +42,13 @@ async function main() {
     'consumer': './apps/consumer.app.ts',
     'consumer-browser': './apps/consumer.browser.app.ts'
   }[args.app];
-  await new MonolythBundler(compiler, filename).run();
+  
+  if (args.app.includes('browser')) {
+    await new BrowserBundler(compiler, filename).run();
+  }
+  else {
+    await new MonolythBundler(compiler, filename).run();
+  }
 
   // TODO: find out what stays open requiring this
   process.exit();

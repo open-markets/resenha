@@ -4,15 +4,16 @@ import { PublisherAuthnProvider } from '../lib/auth/publisher.authn_provider';
 import { TrackerAuthnProvider } from '../lib/auth/tracker.authn_provider';
 import { BrowserDBBucketAdapter } from 'nesoi/lib/elements/entities/bucket/adapters/browserdb.bucket_adapter';
 import { BrowserDBService } from 'nesoi/lib/elements/entities/bucket/adapters/browserdb.service';
-import { MonolythApp } from 'nesoi/lib/engine/app/native/monolyth.app';
+import { BrowserApp } from 'nesoi/lib/engine/app/native/browser.app';
 
-export default new MonolythApp('nuraghe-consumer-browser', Nesoi)
+export default new BrowserApp('nuraghe-consumer-browser', Nesoi)
 
 /**
    *  Package
    */
 
   .package({
+    'name': '@nuraghe/consumer-browser',
     'author': 'Hugo Aboud',
     'license': 'MIT'
   })
@@ -29,6 +30,8 @@ export default new MonolythApp('nuraghe-consumer-browser', Nesoi)
 
     // peer
     'consumer',
+    'publisher',
+    'tracker',
 
     // plugins
     'plugin',
@@ -102,27 +105,27 @@ export default new MonolythApp('nuraghe-consumer-browser', Nesoi)
     }
   })
 
-  // .config.module('publisher', {
-  //   buckets: {
-  //     publisher: {
-  //       adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
-  //     },
-  //   },
-  //   trx: {
-  //     wrap: BrowserDBService.wrap('idb')
-  //   }
-  // })
+  .config.module('publisher', {
+    buckets: {
+      publisher: {
+        adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
+      },
+    },
+    trx: {
+      wrap: BrowserDBService.wrap('idb')
+    }
+  })
 
-  // .config.module('tracker', {
-  //   buckets: {
-  //     tracker: {
-  //       adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
-  //     },
-  //   },
-  //   trx: {
-  //     wrap: BrowserDBService.wrap('idb')
-  //   }
-  // })
+  .config.module('tracker', {
+    buckets: {
+      tracker: {
+        adapter: ($, {idb}) => new BrowserDBBucketAdapter($, idb)
+      },
+    },
+    trx: {
+      wrap: BrowserDBService.wrap('idb')
+    }
+  })
 
   .config.module('plugin_events', {
     buckets: {
@@ -158,7 +161,7 @@ export default new MonolythApp('nuraghe-consumer-browser', Nesoi)
   .config.compiler({
     nesoiVersion: 'file:/home/aboud/git/nesoi/build_browser',
     libPaths: [
-      // Paths to be compiled by TypeScript and included on the final build (code)
+      'lib'
     ],
     staticPaths: [
       // Paths to be included on the final build (static files)

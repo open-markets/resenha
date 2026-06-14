@@ -1,39 +1,73 @@
-# Resenha App
+# resenha-app
 
-Aplicativo mobile `Resenha`, utilizado para visualizar _Agendas_ no formato *OSF (Open Scheduling Format)*.
+This template should help get you started developing with Vue 3 in Vite.
 
-<!-- vscode-markdown-toc -->
-* 1. [Ambiente de Desenvolvimento](#AmbientedeDesenvolvimento)
-* 2. [Checklist de Contribuição](#ChecklistdeContribuio)
+## Recommended IDE Setup
 
-<!-- vscode-markdown-toc-config
-	numbering=true
-	autoSave=true
-	/vscode-markdown-toc-config -->
-<!-- /vscode-markdown-toc -->
+[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
-###  1. <a name='AmbientedeDesenvolvimento'></a>Ambiente de Desenvolvimento
+## Recommended Browser Setup
 
-Para rodar o ambiente de desenvolvimento utilize o comando a seguir:
+- Chromium-based browsers (Chrome, Edge, Brave, etc.):
+  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
+  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
+- Firefox:
+  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
+  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
 
+## Type Support for `.vue` Imports in TS
+
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+
+## Customize configuration
+
+See [Vite Configuration Reference](https://vite.dev/config/).
+
+## Project Setup
+
+```sh
+npm install
 ```
+
+### Compile and Hot-Reload for Development
+
+```sh
 npm run dev
 ```
 
-O servidor ficará disponível no endereço [http://localhost:3000](http://localhost:3000).
+### Type-Check, Compile and Minify for Production
 
-###  2. <a name='ChecklistdeContribuio'></a>Checklist de Contribuição
+```sh
+npm run build
+```
 
-> Confira a seção [Como Contribuir](../README.md#ComoContribuir) do README.
+### Run Unit Tests with [Vitest](https://vitest.dev/)
 
-Antes de abrir um Pull Request com uma alteração nesse projeto, confira os itens abaixo:
+```sh
+npm run test:unit
+```
 
-|   |Descrição|
-|---|---------|
-|☐|As alterações feitas se tratam de uma correção de bug ou de uma feature descrita no ROADMAP e/ou discutida previamente em uma Issue.
-|☐|O código utiliza a _Composition API_ em todos os _scripts_ de componentes Vue.
-|☐|O comando `npm run check` não retorna nenhum erro
-|☐|Após o comando acima, o projeto roda com `npm run preview` com as correções funcionando corretamente
-|☐|O(s) commit(s) possuem mensagens compreensíveis das alterações
-|☐|A branch se chama `bug-...` ou `feature-...`
+### Run End-to-End Tests with [Playwright](https://playwright.dev)
 
+```sh
+# Install browsers for the first run
+npx playwright install
+
+# When testing on CI, must build the project first
+npm run build
+
+# Runs the end-to-end tests
+npm run test:e2e
+# Runs the tests only on Chromium
+npm run test:e2e -- --project=chromium
+# Runs the tests of a specific file
+npm run test:e2e -- tests/example.spec.ts
+# Runs the tests in debug mode
+npm run test:e2e -- --debug
+```
+
+### Lint with [ESLint](https://eslint.org/)
+
+```sh
+npm run lint
+```
