@@ -12,8 +12,8 @@ const args = script('bundle', $ => $
   .arg('app', $ => $.d('Name of the app to run')
     .value($ => $
       .enum({
-        'consumer': '[NodeJS] Nuraghe Consumer',
-        'consumer-browser': '[Browser] Nuraghe Consumer'
+        'publisher': '[NodeJS] Nuraghe Publisher',
+        'publisher-browser': '[Browser] Nuraghe Publisher'
       })
     )
   )
@@ -39,8 +39,8 @@ async function main() {
 
   // Nesoi Monolyth Bundler, used to create a Monolyth NPM package
   const filename = {
-    'consumer': './apps/consumer.app.ts',
-    'consumer-browser': './apps/consumer.browser.app.ts'
+    'publisher': './apps/publisher.app.ts',
+    'publisher-browser': './apps/publisher.browser.app.ts'
   }[args.app];
   
   if (args.app.includes('browser')) {

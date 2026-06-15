@@ -1,1 +1,0 @@
-# Nuraghe > Plugins > Info

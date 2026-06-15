@@ -1,16 +1,11 @@
 import { Space } from 'nesoi/lib/engine/space';
-import ExampleProject from '.nesoi/space';
+import Nuraghe from '.nesoi/space';
 
-export default new Space<ExampleProject>(__dirname)
-  .auth('consumer', $ => ({
+export default new Space<Nuraghe>(__dirname)
+  .auth('mono', $ => ({
     id: $.string,
-    type: $.enum(['consumer'])
-  }))
-  .auth('publisher', $ => ({
-    id: $.string,
-    type: $.enum(['publisher'])
-  }))
-  .auth('tracker', $ => ({
-    id: $.string,
-    type: $.enum(['tracker'])
+    person_id: $.string,
+    owner_type: $.enum(['publisher', 'tracker']),
+    owner_id: $.string,
+    permissions: $.dict($.any)
   }));

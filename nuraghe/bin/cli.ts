@@ -1,9 +1,8 @@
 Error.stackTraceLimit = Infinity;
-import 'nesoi/tools/dotenv';
 
 import { Log } from 'nesoi/lib/engine/util/log';
 
-import App from '../apps/example.app';
+import App from '../apps/publisher.app';
 
 Log.level = process.argv.includes('--debug') ? 'debug' : 'info';
 

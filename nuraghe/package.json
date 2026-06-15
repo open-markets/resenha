@@ -1,5 +1,5 @@
 {
-  "name": "osf",
+  "name": "nuraghe",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "nesoi": "file:../../nesoi/build",
+    "@nesoi/plugin-express": "file:../../nesoi-plugin-express/build",
+    "@nesoi/plugin-insomnia": "file:../../nesoi-plugin-insomnia/build",
     "ulid": "^3.0.1"
   },
   "devDependencies": {
